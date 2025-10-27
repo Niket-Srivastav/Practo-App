@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Razorpay Payment</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+    <h2>Test Payment for Appointment</h2>
+    <p><strong>Order ID:</strong> order_RXg2uvTnDH1mQ5</p>
+    <p><strong>Amount:</strong> ₹1100</p>
+    
+    <button id="payButton">Pay with Razorpay</button>
+    
+    <script>
+        document.getElementById('payButton').onclick = function(e) {
+            var options = {
+                "key": "rzp_test_RXeEoVyoQMSA74",
+                "amount": "110000", 
+                "currency": "INR",
+                "name": "Practo Appointment",
+                "description": "Doctor Consultation Fee",
+                "order_id": "order_RY6l8eQeRufFcR", // Updated order ID
+                "callback_url": "http://localhost:8080/api/appointments/payment-callback", // From checkoutOptions
+                "handler": function (response) {
+                    console.log("Payment Success:", response);
+                    alert(`Payment Successful!
+Order ID: ${response.razorpay_order_id}
+Payment ID: ${response.razorpay_payment_id}
+Signature: ${response.razorpay_signature}`);
+                    callPaymentCallback(response);
+                },
+                "prefill": {
+                    "name": "Test User",
+                    "email": "john.doe@example.com",
+                    "contact": "9876543210"
+                },
+                "theme": {
+                    "color": "#3399cc"
+                }
+            };
+            
+            var rzp1 = new Razorpay(options);
+            rzp1.open();
+        }
+        
+        function callPaymentCallback(response) {
+            fetch('http://localhost:8080/api/appointments/payment-callback', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0Iiwicm9sZSI6IlBBVElFTlQiLCJlbWFpbCI6ImpvaG4uZG9lQGV4YW1wbGUuY29tIiwiaWF0IjoxNzYxNDgxOTgwLCJleHAiOjE3NjE0ODU1ODB9.jkatfbGJh7mn_7SuZLRJndKAgSjztReKfYg4OBcXR5A' 
+                },
+                body: JSON.stringify({
+                    razorpay_order_id: response.razorpay_order_id,
+                    razorpay_payment_id: response.razorpay_payment_id,
+                    razorpay_signature: response.razorpay_signature
+                })
+            })
+            .then(response => {
+                console.log('Response Status:', response.status);
+                console.log('Response Headers:', response.headers);
+                return response.json();
+            })
+            .then(data => {
+                console.log('Callback Success:', data);
+                alert('Appointment confirmed! ' + JSON.stringify(data));
+            })
+            .catch(error => {
+                console.error('Callback Error:', error);
+                alert('Payment callback failed: ' + error);
+            });
+        }
+    </script>
+</body>
+</html>
