@@ -24,7 +24,7 @@ public class NotificationEventListener {
 
     private final NotificationService notificationService;
 
-    @KafkaListener(topics = "notification-events", groupId = "notification-service")
+    @KafkaListener(topics = "appointment_notifications", groupId = "notification-service")
     @Retryable(value = {Exception.class}, maxAttempts = 3, backoff = @Backoff(delay = 2000))
     public void handleNotificationEvent(
         @Payload NotificationEvent notificationEvent,
@@ -58,8 +58,8 @@ public class NotificationEventListener {
             }
         }
 
-    @KafkaListener(topics = "notification-events.DLT", groupId = "notification-service-dlq")
-    public void handdleDeadLetterEvent(
+    @KafkaListener(topics = "appointment_notifications.DLT", groupId = "notification-service-dlq")
+    public void handleDeadLetterEvent(
         @Payload NotificationEvent notificationEvent,
         @Header(KafkaHeaders.RECEIVED_TOPIC) String topic,
         Acknowledgment acknowledgment
