@@ -40,6 +40,8 @@ public class kafkaProducerConfig {
 
         configProps.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true); // Ensure exactly-once delivery
 
+        configProps.put(JsonSerializer.ADD_TYPE_INFO_HEADERS, false);
+
         return new DefaultKafkaProducerFactory<>(configProps);
     }
 

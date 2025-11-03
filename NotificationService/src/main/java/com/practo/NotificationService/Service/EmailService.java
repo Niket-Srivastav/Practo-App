@@ -1,5 +1,4 @@
 package com.practo.NotificationService.Service;
-import org.springframework.mail.MailException;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -8,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.practo.NotificationService.DTO.NotificationEvent;
 
-import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,8 +45,9 @@ public class EmailService {
             javaMailSender.send(message);
             log.info("Appointment confirmation email sent to {}", notificationEvent.getRecipientEmail());
 
-        } catch (MessagingException | MailException e) {
+        } catch (Exception e) {
             log.error("Error sending appointment confirmation email to {}", notificationEvent.getRecipientEmail(), e);
+            throw new RuntimeException("Failed to send email to " + notificationEvent.getRecipientEmail(), e);
         }
     }
     

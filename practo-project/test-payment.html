@@ -19,8 +19,8 @@
                 "currency": "INR",
                 "name": "Practo Appointment",
                 "description": "Doctor Consultation Fee",
-                "order_id": "order_RY6l8eQeRufFcR", // Updated order ID
-                "callback_url": "http://localhost:8080/api/appointments/payment-callback", // From checkoutOptions
+                "order_id": "order_RbOh1XYEaMaPaL", // Updated order ID
+                "callback_url": "http://localhost:8080/api/appointments/payment-callback",
                 "handler": function (response) {
                     console.log("Payment Success:", response);
                     alert(`Payment Successful!
@@ -48,7 +48,7 @@ Signature: ${response.razorpay_signature}`);
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0Iiwicm9sZSI6IlBBVElFTlQiLCJlbWFpbCI6ImpvaG4uZG9lQGV4YW1wbGUuY29tIiwiaWF0IjoxNzYxNDgxOTgwLCJleHAiOjE3NjE0ODU1ODB9.jkatfbGJh7mn_7SuZLRJndKAgSjztReKfYg4OBcXR5A' 
+                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0Iiwicm9sZSI6IlBBVElFTlQiLCJlbWFpbCI6ImpvaG4uZG9lQGV4YW1wbGUuY29tIiwiaWF0IjoxNzYyMjAxMjY2LCJleHAiOjE3NjIyMDQ4NjZ9.6aITaX9kN8qJfIWbR7FwN2xTLPfotkD5pnVSZXmNC8c' 
                 },
                 body: JSON.stringify({
                     razorpay_order_id: response.razorpay_order_id,
