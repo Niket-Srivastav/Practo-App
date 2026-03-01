@@ -1,7 +1,6 @@
 package com.practo.controller;
 
 import java.time.LocalDate;
-import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.practo.dto.ApiPayload;
 import com.practo.dto.AvailabilityRequest;
-import com.practo.dto.AvailabilityResponse;
 import com.practo.dto.AvailabilitySearchDto;
+import com.practo.dto.DoctorSlots;
 import com.practo.entity.DoctorAvailability;
 import com.practo.service.DoctorAvailabilityService;
 
@@ -49,6 +48,20 @@ public class AvailabilityController {
             true,
             "Doctor availability fetched successfully",
             availabilityService.getDoctorAvailability(doctorId, date, page, limit)
+        ));
+    }
+
+
+    @GetMapping("/my-slots")
+    public ResponseEntity<ApiPayload<DoctorSlots>> getDoctorSlotInfo(
+            @RequestAttribute("userId") Integer userId,
+            @RequestParam LocalDate date,
+        @RequestParam(defaultValue = "1") int page,
+        @RequestParam(defaultValue = "10") int limit) {
+        return ResponseEntity.ok(new ApiPayload<>(
+            true,
+            "Doctor slot info fetched successfully",
+            availabilityService.getDoctorSlotInfo(userId, date,page,limit)
         ));
     }
 }

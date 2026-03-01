@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 import com.practo.dto.ApiPayload;
 import com.practo.dto.AppointmentDetails;
 import com.practo.dto.BookingRequest;
@@ -140,6 +142,18 @@ public class AppointmentController {
                 .message("Error processing payment")
                 .build());
         }
+    }
+
+    @GetMapping("/my")
+    public ResponseEntity<ApiPayload<List<AppointmentDetails>>> getMyAppointments(
+        @RequestAttribute("userId") Integer userId
+    ) {
+        List<AppointmentDetails> appointments = appointmentService.getMyAppointments(userId);
+        return ResponseEntity.ok(ApiPayload.<List<AppointmentDetails>>builder()
+            .success(true)
+            .message("Appointments fetched successfully")
+            .data(appointments)
+            .build());
     }
 
     @GetMapping("/{appointmentId}/status")

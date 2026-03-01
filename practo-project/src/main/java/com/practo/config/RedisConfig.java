@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.practo.dto.AvailabilitySearchDto;
 import com.practo.dto.DoctorSearchResponse;
+import com.practo.dto.DoctorSlots;
 
 @Configuration
 @EnableCaching
@@ -59,11 +60,23 @@ public class RedisConfig {
             )
             .entryTtl(Duration.ofMinutes(5));
 
+        ObjectMapper doctorSlotObjectMapper = new ObjectMapper();
+        doctorSlotObjectMapper.registerModule(new JavaTimeModule());
+        Jackson2JsonRedisSerializer<DoctorSlots> doctorSloterializer = 
+            new Jackson2JsonRedisSerializer<>(doctorSlotObjectMapper, DoctorSlots.class);
+        
+        RedisCacheConfiguration doctorSlotCacheConfig = RedisCacheConfiguration.defaultCacheConfig()
+            .serializeValuesWith(
+                RedisSerializationContext.SerializationPair.fromSerializer(doctorSloterializer)
+            )
+            .entryTtl(Duration.ofMinutes(5));
+
         
 
         return RedisCacheManager.builder(factory)
         .withCacheConfiguration("doctorSearch", doctorSearchCacheConfig)
         .withCacheConfiguration("doctorAvailability", doctorAvailabilityCacheConfig)
+        .withCacheConfiguration("doctorSlotInfo", doctorSlotCacheConfig)
                 .cacheDefaults(defaultConfig)
                 .build();
     }

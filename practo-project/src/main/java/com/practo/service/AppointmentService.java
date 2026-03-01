@@ -1,6 +1,7 @@
 package com.practo.service;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Optional;
 
 import org.json.JSONObject;
@@ -151,6 +152,25 @@ public class AppointmentService {
         paymentRepository.save(payment);
         appointmentRepository.save(appointment);
 
+    }
+
+   public List<AppointmentDetails> getMyAppointments(Integer patientId) {
+        List<Appointment> appointments = appointmentRepository.findByPatientId(patientId);
+
+        return appointments.stream().map(appointment -> {
+            Payment payment = paymentRepository.findByAppointment(appointment).orElse(null);
+            DoctorAvailability availability = appointment.getAvailability();
+
+            return AppointmentDetails.builder()
+                .appointmentId(appointment.getAppointmentId())
+                .status(appointment.getStatus().toString())
+                .paymentStatus(payment != null ? payment.getStatus().toString() : "PENDING")
+                .amount(Optional.ofNullable(payment).map(Payment::getAmount).orElse(0.0))
+                .doctorName(availability.getDoctor().getPerson().getUsername())
+                .appointmentDate(availability.getAvailableDate().toString())
+                .appointmentTime(availability.getStartTime().toString())
+                .build();
+        }).toList();
     }
 
    public AppointmentDetails getAppointmentDetails(Integer appointmentId) {
