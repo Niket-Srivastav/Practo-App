@@ -1,0 +1,27 @@
+package com.practo.controller;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.practo.service.VideoCallService;
+
+import lombok.RequiredArgsConstructor;
+
+@RestController
+@RequestMapping("/api/video-call")
+@RequiredArgsConstructor
+public class VideoCallController {
+    private final VideoCallService videoCallService;
+
+    @GetMapping("/token/appointmentId")
+    public ResponseEntity<?> getCallToken(
+            @PathVariable Integer appointmentId,
+            @RequestAttribute("userId") Integer userId
+    ) {        
+        return ResponseEntity.ok(videoCallService.generateCallToken(appointmentId, userId));
+    } 
+}

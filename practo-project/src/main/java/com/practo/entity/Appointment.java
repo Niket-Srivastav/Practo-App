@@ -39,5 +39,8 @@ public class Appointment {
     @JoinColumn(name = "patient_id", referencedColumnName = "userId", insertable = false, updatable = false)
     private Person patient;
 
+    @Column(name = "room_id", unique = true)
+    private String roomId;
+
     public enum Status { WAITING, CONFIRMED, CANCELLED, FAILED }
 }
