@@ -94,7 +94,7 @@ public class DoctorAvailabilityService {
         // Column order matches the SELECT in the native query:
         // 0 availabilityId, 1 availableDate, 2 startTime, 3 endTime,
         // 4 isBooked, 5 patientId, 6 bookedOn, 7 appointmentStatus,
-        // 8 patientUsername, 9 patientEmail
+        // 8 patientUsername, 9 patientEmail, 10 appointmentId
         List<DoctorSlotInfo> slotInfoList = rows.stream()
                 .map(row -> DoctorSlotInfo.builder()
                         .availabilityId(row[0] != null ? ((Number) row[0]).intValue() : null)
@@ -107,6 +107,7 @@ public class DoctorAvailabilityService {
                         .appointmentStatus(row[7] != null ? row[7].toString() : null)
                         .patientUsername(row[8] != null ? row[8].toString() : null)
                         .patientEmail(row[9] != null ? row[9].toString() : null)
+                        .appointmentId(row[10] != null ? ((Number) row[10]).intValue() : null)
                         .build())
                 .toList();
         long totalCount = doctorAvailabilityRepository

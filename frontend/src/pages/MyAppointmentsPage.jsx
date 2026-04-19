@@ -5,7 +5,7 @@ import toast from 'react-hot-toast'
 import {
   Calendar, Clock, IndianRupee, RefreshCw, Search,
   Loader, CheckCircle, XCircle, AlertCircle, Clock3,
-  Stethoscope, CreditCard, X, Eye, ArrowRight
+  Stethoscope, CreditCard, X, Eye, ArrowRight, Video
 } from 'lucide-react'
 
 function formatTime(t) {
@@ -269,6 +269,7 @@ export default function MyAppointmentsPage() {
 function AppointmentCard({ appointment: appt, onCancel }) {
   const navigate = useNavigate()
   const canCancel = appt.status === 'CONFIRMED'
+  const canCall   = appt.status === 'CONFIRMED'
 
   return (
     <div className={`glass rounded-2xl border overflow-hidden transition-all duration-300 ${
@@ -328,6 +329,15 @@ function AppointmentCard({ appointment: appt, onCancel }) {
             <Eye size={13} />
             Details
           </button>
+          {canCall && (
+            <button
+              onClick={() => navigate(`/video-call/${appt.appointmentId}`)}
+              className="btn-primary flex-1 sm:flex-none justify-center text-xs py-2 px-3"
+            >
+              <Video size={13} />
+              <span>Join Call</span>
+            </button>
+          )}
           {canCancel && (
             <button onClick={onCancel} className="btn-danger flex-1 sm:flex-none justify-center text-xs py-2 px-3">
               <XCircle size={13} />

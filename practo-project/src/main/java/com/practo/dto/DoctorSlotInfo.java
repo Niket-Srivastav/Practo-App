@@ -41,4 +41,5 @@ public class DoctorSlotInfo {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime bookedOn;
     private String appointmentStatus;
+    private Integer appointmentId;
 }

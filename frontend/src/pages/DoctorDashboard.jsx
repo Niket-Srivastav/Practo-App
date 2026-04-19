@@ -1,11 +1,12 @@
 import { useState, useEffect, useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { availabilityAPI } from '../api/client'
 import { useAuth } from '../contexts/AuthContext'
 import toast from 'react-hot-toast'
 import {
   Plus, Calendar, Clock, CheckCircle, Stethoscope,
   Loader, ArrowRight, LayoutDashboard, Info,
-  Users, Mail, ChevronLeft, ChevronRight, UserCheck, CircleDot
+  Users, Mail, ChevronLeft, ChevronRight, UserCheck, CircleDot, Video
 } from 'lucide-react'
 
 function InfoCard({ icon: Icon, label, value, gradient, accent }) {
@@ -42,6 +43,7 @@ const STATUS_META = {
 
 export default function DoctorDashboard() {
   const { user } = useAuth()
+  const navigate = useNavigate()
   const [form, setForm] = useState({ availableDate: '', startTime: '', endTime: '' })
   const [loading, setLoading] = useState(false)
   const [addedSlots, setAddedSlots] = useState([])
@@ -399,6 +401,15 @@ export default function DoctorDashboard() {
                             <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full border ${status.bg} ${status.color}`}>
                               {status.label}
                             </span>
+                          )}
+                          {slot.appointmentStatus === 'CONFIRMED' && slot.appointmentId && (
+                            <button
+                              onClick={() => navigate(`/video-call/${slot.appointmentId}`)}
+                              className="btn-primary !py-1 !px-3 !text-xs ml-auto"
+                            >
+                              <Video size={12} />
+                              <span>Join Call</span>
+                            </button>
                           )}
                         </div>
                       ) : slot.isBooked ? (

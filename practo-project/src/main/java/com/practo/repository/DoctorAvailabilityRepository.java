@@ -37,7 +37,8 @@ public interface DoctorAvailabilityRepository extends JpaRepository<DoctorAvaila
                    a.booked_on         AS bookedOn,
                    a.status            AS appointmentStatus,
                    p.username          AS patientUsername,
-                   p.email             AS patientEmail
+                   p.email             AS patientEmail,
+                   a.appointment_id    AS appointmentId
             FROM doctor_availability da
             LEFT JOIN appointment a  ON da.availability_id = a.availability_id
             LEFT JOIN person p       ON a.patient_id       = p.user_id

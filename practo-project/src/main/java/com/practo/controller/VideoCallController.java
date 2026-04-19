@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.practo.dto.ApiPayload;
+import com.practo.dto.VideoCallTokenResponse;
 import com.practo.service.VideoCallService;
 
 import lombok.RequiredArgsConstructor;
@@ -17,11 +19,16 @@ import lombok.RequiredArgsConstructor;
 public class VideoCallController {
     private final VideoCallService videoCallService;
 
-    @GetMapping("/token/appointmentId")
-    public ResponseEntity<?> getCallToken(
+    @GetMapping("/token/{appointmentId}")
+    public ResponseEntity<ApiPayload<VideoCallTokenResponse>> getCallToken(
             @PathVariable Integer appointmentId,
             @RequestAttribute("userId") Integer userId
-    ) {        
-        return ResponseEntity.ok(videoCallService.generateCallToken(appointmentId, userId));
-    } 
+    ) {
+        VideoCallTokenResponse response = videoCallService.generateCallToken(appointmentId, userId);
+        return ResponseEntity.ok(ApiPayload.<VideoCallTokenResponse>builder()
+                .success(true)
+                .message("Call token generated")
+                .data(response)
+                .build());
+    }
 }

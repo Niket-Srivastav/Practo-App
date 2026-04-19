@@ -52,4 +52,9 @@ export const appointmentsAPI = {
   cancel: (appointmentId) => api.put(`/appointments/${appointmentId}/cancel`),
 }
 
+// ─── Video Call ─────────────────────────────────────────────────────────────
+export const videoCallAPI = {
+  getToken: (appointmentId) => api.get(`/video-call/token/${appointmentId}`),
+}
+
 export default api

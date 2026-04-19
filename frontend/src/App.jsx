@@ -11,6 +11,7 @@ import BookingPage from './pages/BookingPage'
 import MyAppointmentsPage from './pages/MyAppointmentsPage'
 import DoctorDashboard from './pages/DoctorDashboard'
 import AppointmentStatusPage from './pages/AppointmentStatusPage'
+import VideoCallPage from './pages/VideoCallPage'
 
 export default function App() {
   return (
@@ -79,6 +80,16 @@ export default function App() {
             element={
               <ProtectedRoute requiredRole="DOCTOR">
                 <DoctorDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Video call — accessible by both patient and doctor */}
+          <Route
+            path="/video-call/:appointmentId"
+            element={
+              <ProtectedRoute>
+                <VideoCallPage />
               </ProtectedRoute>
             }
           />
